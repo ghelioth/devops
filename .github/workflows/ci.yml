@@ -2,9 +2,9 @@ name: pipeline CI
 
 on:
     push:
-        branches: ["ci"]
+        branches: ["dev", "addList"]
     pull_request:
-        branches: ["ci"]
+        branches: ["dev", "addList"]
 
 jobs:
     build-and-test:
@@ -21,3 +21,11 @@ jobs:
                   
             - name: build docker
               run: docker compose -f docker-compose.yaml build
+              
+            - name: composer install
+              run: |
+                  docker compose run --rm php_devops composer install \
+                  --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+                  
+            - name: run test
+              run: docker compose run --rm php_devops ./vendor/bin/phpunit --testdox
