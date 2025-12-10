@@ -23,7 +23,7 @@ jobs:
               run: docker compose -f docker-compose.yaml build
               
             - name: start all container
-              run: docker compose up -d
+              run: docker compose -f docker-compose.yaml up -d
               
             - name: wait only php devops container
               run: |
@@ -36,8 +36,6 @@ jobs:
               run: |
                   docker compose exec -T php_devops composer install \
                   --no-ansi --no-interaction --no-progress --prefer-dist
-#                  docker compose exec -T php_devops php bin/console importmap:install
-#                  docker compose exec -T php_devops php bin/console asset-map:compile
              
             - name: run test
               run: docker compose exec -T php_devops php bin/phpunit --testdox
@@ -45,3 +43,4 @@ jobs:
             - name: down container
               if: always()
               run: docker compose down
+            
