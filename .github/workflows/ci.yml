@@ -29,6 +29,7 @@ jobs:
               run: |
                   until docker compose exec -T php_devops php -v > /dev/null 2>&1; do
                   echo "wait again pls"
+                  sleep 2
                   done
                   echo "ready for composer"
               
