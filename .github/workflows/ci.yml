@@ -4,7 +4,7 @@ on:
     push:
         branches: ["dev", "addList"]
     pull_request:
-        branches: ["dev", "addList"]
+        branches: ["dev"]
 
 jobs:
     build-and-test:
@@ -38,7 +38,7 @@ jobs:
                   --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
              
             - name: run test
-              run: docker compose run --rm php_devops ./vendor/bin/phpunit --testdox
+              run: docker compose run --rm php_devops php bin/phpunit --testdox
               
             - name: down container
               if: always()
