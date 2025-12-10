@@ -22,13 +22,24 @@ jobs:
             - name: build docker
               run: docker compose -f docker-compose.yaml build
               
+            - name: start all container
+              run: docker compose up -d
+              
+            - name: wait only php devops container
+              run: |
+                  until docker compose exec -T php_devops php -v > /dev/null 2>&1; do
+                  echo "wait again pls"
+                  done
+                  echo "ready for composer"
+              
             - name: composer install
               run: |
-                  docker compose run --rm php_devops composer install \
+                  docker compose exec -T php_devops composer install \
                   --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-            
-            - name: nginx
-              run: docker compose run --rm server_devops
              
             - name: run test
               run: docker compose run --rm php_devops ./vendor/bin/phpunit --testdox
+              
+            - name: down container
+              if: always()
+              run: docker compose down
