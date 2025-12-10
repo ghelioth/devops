@@ -1,17 +1,14 @@
 name: pipeline CI
 
-
 on:
     push:
         branches: ["ci"]
     pull_request:
         branches: ["ci"]
 
-
 jobs:
     build-and-test:
         runs-on: ubuntu-latest
-        
         
         steps:
             - name: install checkout
