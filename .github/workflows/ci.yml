@@ -38,7 +38,7 @@ jobs:
                   --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
              
             - name: run test
-              run: docker compose run --rm php_devops php bin/phpunit --testdox
+              run: docker compose exec -T php_devops ./vendor/bin/phpunit --testdox
               
             - name: down container
               if: always()
