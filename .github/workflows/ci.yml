@@ -41,6 +41,14 @@ jobs:
             - name: run test
               run: docker compose exec -T php_devops php bin/phpunit --testdox
               
+            - name: renovate
+              uses: renovatebot/github-action@v44.0.5
+              with:
+                token: ${{ secrets.RENOVATE }}
+              env:
+                LOG_LEVEL: "debug"
+                RENOVATE_REPOSITORIES: "ghelioth/devops"
+              
             - name: down container
               if: always()
               run: docker compose down
