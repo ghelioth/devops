@@ -1,17 +1,14 @@
 name: pipeline CI
 
-
 on:
     push:
-        branches: ["ci"]
+        branches: ["dev", "addList"]
     pull_request:
-        branches: ["ci"]
-
+        branches: ["dev"]
 
 jobs:
     build-and-test:
         runs-on: ubuntu-latest
-        
         
         steps:
             - name: install checkout
@@ -19,8 +16,32 @@ jobs:
               
             - name: check docker
               run: |
-                  docker -v
-                  docker compose version
+                docker -v
+                docker compose version
                   
             - name: build docker
               run: docker compose -f docker-compose.yaml build
+              
+            - name: start all container
+              run: docker compose -f docker-compose.yaml up -d
+              
+            - name: wait only php devops container
+              run: |
+                  until docker compose exec -T php_devops php -v > /dev/null 2>&1; do
+                  echo "wait again pls"
+                  sleep 2
+                  done
+                  echo "ready for composer"
+              
+            - name: composer install
+              run: |
+                  docker compose exec -T php_devops composer install \
+                  --no-ansi --no-interaction --no-progress --prefer-dist
+             
+            - name: run test
+              run: docker compose exec -T php_devops php bin/phpunit --testdox
+              
+            - name: down container
+              if: always()
+              run: docker compose down
+            
