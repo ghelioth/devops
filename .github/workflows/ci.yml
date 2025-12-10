@@ -28,7 +28,7 @@ jobs:
                   --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
             
             - name: nginx
-              run: docker compose run -rm server_devops
+              run: docker compose run --rm server_devops
              
             - name: run test
               run: docker compose run --rm php_devops ./vendor/bin/phpunit --testdox
