@@ -36,6 +36,8 @@ jobs:
               run: |
                   docker compose exec -T php_devops composer install \
                   --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+                  docker compose exec -T php_devops php bin/console importmap:install
+                  docker compose exec -T php_devops php bin/console asset-map:compile
              
             - name: run test
               run: docker compose exec -T php_devops php bin/phpunit --testdox
