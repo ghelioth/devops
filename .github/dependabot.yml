@@ -1,12 +1,12 @@
 version: 2
 updates:
     - package-ecosystem: "composer"
-      directory: "/"
+      directory: "/symfony/"
       schedule:
           interval: "daily"
       open-pull-requests-limit: 5
     - package-ecosystem: "docker"
-      directory: "/"
+      directory: "/.docker/php/"
       schedule:
           interval: daily
       open-pull-requests-limit: 5
